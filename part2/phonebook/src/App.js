@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Persons from './components/Persons';
 import PersonForm from './components/PersonForm';
 import Filter from './components/Filter';
+import axios from 'axios'
 
 
 const App = () => {
@@ -12,7 +13,15 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ searchTerm, setSearchTerm ] = useState('')
 
-
+  useEffect(() => {
+    console.log('effect');
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fulfilled', response.data)
+        setPersons(response.data)
+      })
+  }, [])
   const AddName = (event) => {
     event.preventDefault();
     let isPersonAlreadyExist = persons.find((person)=> person.name === newName);
