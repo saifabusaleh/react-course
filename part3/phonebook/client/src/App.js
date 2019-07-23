@@ -31,7 +31,12 @@ const App = () => {
       })
       .catch(error => {
         console.log('getAll persons failed ', error)
-        updateMessage(`failed to getAll, ${error}`,false);
+        if(error.response.data.error) {
+          updateMessage(`failed to getAll, ${error.response.data.error}`,false);
+        } else {
+          updateMessage(`failed to getAll, ${error}`,false);
+        }
+        
       })
   }, [])
 
@@ -57,13 +62,18 @@ const App = () => {
           })
           .catch(error => {
             console.log('update person failed ', error)
-            updateMessage(`failed to update person, ${error}`,false);
+            if(error.response.data.error) {
+              updateMessage(`failed to update person, ${error.response.data.error}`,false);
+            } else {
+              updateMessage(`failed to update person, ${error}`,false);
+            }
           })
       }
     } else {
       personsService
       .create(personObject)
         .then(addedPersonResult => {
+          console.log('added person: ', addedPersonResult)
           setPersons(persons.concat(addedPersonResult))
           setNewName('')
           setNewNumber('')
@@ -71,7 +81,11 @@ const App = () => {
         })
         .catch(error => {
           console.log('create person failed ', error)
-          updateMessage(`failed to create person, ${error}`,false);
+          if(error.response.data.error) {
+            updateMessage(`failed to create person, ${error.response.data.error}`,false);
+          } else {
+            updateMessage(`failed to create person, ${error}`,false);
+          }
         })
     }
   }
@@ -104,7 +118,12 @@ const App = () => {
         })
         .catch(error => {
           console.log('create person failed ', error)
-          updateMessage(`failed to delete, ${error}`,false);
+          if(error.response.data.error) {
+            updateMessage(`failed to delete, ${error.response.data.error}`,false);
+          } else {
+            updateMessage(`failed to delete, ${error}`,false);
+          }
+         
         })
       }
     }
