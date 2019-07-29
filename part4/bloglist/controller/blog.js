@@ -11,13 +11,19 @@ blogRouter.get('/', async (request, response, next) => {
 
 blogRouter.post('/', async (request, response, next) => {
   const blog = new Blog(request.body)
-  try {
-    const noteSaved = await blog.save()
-    response.status(201).json(noteSaved)
-  } catch (exception) {
-    next(exception)
+  if(!blog.title && !blog.url) {
+    response.status(400).end()
+  } else  {
+    if(!blog.likes) {
+      blog.likes =0
+    }
+    try {
+      const blogSaved = await blog.save()
+      response.status(201).json(blogSaved)
+    } catch (exception) {
+      next(exception)
+    }
   }
-
 })
 
 blogRouter.delete('/:id', async (request, response, next) => {
